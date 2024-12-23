@@ -17,12 +17,6 @@ pipeline {
             }
         }
 
-        stages {
-        stage("commit") {
-            steps {
-                echo "hey bro"
-            }
-        }
 
 
         stage("parameter") {
