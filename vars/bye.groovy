@@ -1,3 +1,3 @@
-def hey(){
+def call(){
   sh "ls"
 }
