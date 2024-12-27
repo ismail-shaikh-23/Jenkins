@@ -1,5 +1,3 @@
-def call(){
-
-  sh "mkdir grovy"
+def hey(){
   sh "ls"
 }
