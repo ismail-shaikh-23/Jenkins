@@ -1,5 +1,5 @@
 def call(){
 
   sh "mkdir grovy"
-  sh "pwd"
+  sh "ls"
 }
