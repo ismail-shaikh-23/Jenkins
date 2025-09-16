@@ -1,0 +1,91 @@
+pipeline{
+    agent {
+        label 'linux'
+    }
+    parameters{
+        string(name: "Person", defaultValue: "Male", description: " who you are?")
+        choice(name: "city", choices:["mumbai", "pune","gujrat" ], description: "select your city")
+    }
+ 
+    environment{
+        NAME = 'Ismail Shaikh'
+        AGE = 23
+    }
+    
+    stages{
+         stage("info"){
+            steps{
+                echo "My name is ${NAME}"
+                sh 'echo "${AGE}"'
+                echo "${BUILD_ID}"
+                echo "${Person}"
+                echo "${city}"
+            }
+        }
+        
+        
+        stage("test"){
+            steps{
+                echo "This is Test Stage"
+            }
+        }
+        
+        stage("build"){
+            options{
+                timestamps()
+                timeout(time: 60, unit: 'MINUTES')
+            }
+            steps{
+                echo "This is Build Stage"
+            }
+        }
+        
+        stage("deploy"){
+            environment{
+                env = "prod"
+            }
+            steps{
+                echo "This is Deploy Stage and ${env}"
+            }
+        }
+        
+        stage("parallel"){
+            parallel{
+                stage("QA"){
+                    steps{
+                        echo "this is Qa"
+                    }
+                }
+                
+                stage("staging"){
+                    steps{
+                        echo "this is staging"
+                    }
+                }
+                
+                stage("PROD"){
+                    input{
+                        message "should we continue?"
+                        ok "yes we should"
+                    }
+                    steps{
+                        echo "this is prod"
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    post{
+        always{
+            echo "This is Always Execute"
+        }
+        success{
+            echo " This is Execute wehn job is Successful"
+        }
+         failure{
+            echo " This is Execute wehn job is Failure"
+        }
+    }
+}
